@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QLineEdit, QFrame, QMessageBox
+from PyQt5.Qt import QSizePolicy
 from .widgets.listview import ListView
 from .widgets.searchbar import SearchBar
 from .widgets.stack import Stack
@@ -23,9 +24,10 @@ class CustomersScreen(QFrame):
 		layout = QHBoxLayout()
 		layout.setContentsMargins(5, 5, 5, 5)
 
-		self.buttonAdd = loader.buttonIcon("addClient.png", 25, 25)
+		self.buttonAdd = loader.buttonIcon("addClient.png", 20, 20)
 		self.buttonAdd.setFixedHeight(30)
-		self.buttonAdd.setFixedWidth(150)
+		self.buttonAdd.setFixedWidth(200)
+
 		self.buttonAdd.setObjectName("buttonAdd")
 		self.buttonAdd.setText("Adicionar um Cliente")
 		self.buttonAdd.setToolTip("Adicionar um novo Cliente")

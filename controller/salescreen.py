@@ -21,7 +21,6 @@ class SaleScreenController(object):
 		self.createHeader()
 
 	def addSale(self, sale):
-		print(sale)
 		model = self.createModelItem(
 			sale.id, 
 			self.getCustomerName(sale.customerId),

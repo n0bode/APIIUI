@@ -23,9 +23,10 @@ class CategoriesScreen(QFrame):
 		layout = QHBoxLayout()
 		layout.setContentsMargins(5, 5, 5, 5)
 
-		self.buttonAdd = loader.buttonIcon("addCategory.png", 25, 25)
+		self.buttonAdd = loader.buttonIcon("addCategory.png", 20, 20)
 		self.buttonAdd.setFixedHeight(30)
-		self.buttonAdd.setFixedWidth(150)
+		self.buttonAdd.setFixedWidth(200)
+
 		self.buttonAdd.setObjectName("buttonAdd")
 		self.buttonAdd.setText("Adicionar Categoria")
 		self.buttonAdd.setToolTip("Adicionar um nova Categoria")

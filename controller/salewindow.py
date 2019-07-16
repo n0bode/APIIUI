@@ -17,6 +17,8 @@ class SaleWindowController:
 		self._customers = []
 		self.saleID = 0
 		self.createHeaderProducts()
+		self.createHeaderCart()
+
 		self.view.buttonAddProduct.clicked.connect(self.showAddProductWindow)
 		self.window.products.onFilter = self.filterItems
 
@@ -73,7 +75,7 @@ class SaleWindowController:
 	def getItems(self, id):
 		self.saleID = id
 		self.view.buttonAddProduct.setHidden(True)
-
+		self.view.products.canDelete = False
 		thread = RestThread(self.view)
 		thread.update.connect(self.getItemsCart)
 		thread.start()
@@ -86,21 +88,31 @@ class SaleWindowController:
 		self.view.grossText.setText("Valor Total: {:.2f} R$".format(self._gross))
 
 	def addCart(self, product):
-		model = self.createModelProduct(product.id, product.name, product.price, product.stock)
+		model = self.createModelCart(product.id, product.name, product.price)
 		self.view.products.createItem(product, model)
 		self._cart.append(product)
 		self._gross += float(product.price)
 		self.updateGross()
 
 	def remCart(self, item):
-		product = self.view.products.itemWidget(item).product
+		product = self.view.products.itemWidget(item).data
 		self.view.products.deleteItem(item)
 		self._gross -= float(product.price)
 		self.updateGross()
 
+	def createHeaderCart(self):
+		header = self.createModelCart("ID", "Nome", "Preço (R$)")
+		self.view.products.createHeader(header)
+
+	def createModelCart(self, id, name, price):
+		return [
+			{"text":id, "width":50},
+			{"text":name},
+			{"text":price, "width":100},
+		]
+
 	def createHeaderProducts(self):
 		header = self.createModelProduct("ID", "Nome", "Preço (R$)", "Estoque")
-		self.view.products.createHeader(header)
 		self.window.products.createHeader(header)
 
 	def createModelProduct(self, id, name, price, stock):

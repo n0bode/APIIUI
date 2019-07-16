@@ -13,7 +13,7 @@ class ProductWindow(Dialog):
 	def _initUI(self):
 		self._name = QLineEdit()
 		self._name.setFixedHeight(30)
-		self._name.setPlaceholderText("Pirulito Pop")		
+		self._name.setPlaceholderText("produto")		
 		
 		self._stock = QSpinBox()
 		self._stock.setMaximum(100000)
@@ -24,7 +24,7 @@ class ProductWindow(Dialog):
 		self._price.setDecimals(2)
 		self._price.setMaximum(99999.99)
 		self._price.setFixedHeight(30)
-		self._price.setValue(10)
+		self._price.setValue(10.0)
 
 		self.inputCategory = QComboBox()
 		self.inputCategory.setFixedHeight(30)
@@ -36,7 +36,7 @@ class ProductWindow(Dialog):
 		self.addField("Preço(R$)", self._price)
 		self.addField("Estoque(Unidade)", self._stock)
 		self.addField("Categoria", self.inputCategory)
-		self.addField("Validade", self._date)
+		#self.addField("Validade", self._date)
 		super(ProductWindow, self)._initUI()
 
 	def name(self):

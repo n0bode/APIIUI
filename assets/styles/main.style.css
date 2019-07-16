@@ -146,10 +146,6 @@ QLineEdit, QSpinBox, QDoubleSpinBox{
 	background-color:#EAEAEA; 
 }
 
-QSpinBox::up-button, QSpinBox::down-button, QDoubleSpinBox::down-button, QDoubleSpinBox::up-button{
-	border: none;
-}
-
 SearchBar QLineEdit{
 	color:black;
 	border-right: none;

@@ -25,7 +25,8 @@ class SaleScreen(QFrame):
 
 		self.buttonAdd = loader.buttonIcon("addSales.png", 25, 25)
 		self.buttonAdd.setFixedHeight(30)
-		self.buttonAdd.setFixedWidth(150)
+		self.buttonAdd.setFixedWidth(200)
+		
 		self.buttonAdd.setObjectName("buttonAdd")
 		self.buttonAdd.setText("Adicionar Venda")
 		self.buttonAdd.setToolTip("Adicionar uma nova venda")

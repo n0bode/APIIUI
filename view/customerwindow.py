@@ -12,7 +12,7 @@ class CustomerWindow(Dialog):
 	def _initUI(self):
 		self._name = QLineEdit()
 		self._name.setFixedHeight(30)	
-		self._name.setPlaceholderText("John João Titor")
+		self._name.setPlaceholderText("Nome")
 
 		self._email = QLineEdit()
 		self._email.setFixedHeight(30)
@@ -22,7 +22,7 @@ class CustomerWindow(Dialog):
 
 		self._phone = QLineEdit()
 		self._phone.setFixedHeight(30)
-		self._phone.setPlaceholderText("66 (77) 99")
+		self._phone.setPlaceholderText("(55) 9999-9999")
 		rg = QRegularExpression("^((\\+?(\\d{2}))\\s?)?((\\d{2})|(\\((\\d{2})\\))\\s?)?(\\d{3,15})(\\-(\\d{3,15}))?$", QRegularExpression.CaseInsensitiveOption)
 		self._phone.setValidator(QRegularExpressionValidator(rg, self))
 
