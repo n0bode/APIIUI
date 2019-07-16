@@ -3,13 +3,14 @@ from PyQt5.Qt import Qt, pyqtSignal
 import loader
 
 class ListViewItem (QWidget):
-	def __init__(self, listview, item, data, model, isHeader=False, canEdit=True, *args):
+	def __init__(self, listview, item, data, model, isHeader=False, canEdit=True, canDelete=True, *args):
 		super(ListViewItem, self).__init__(*args)
 		self.item = item
 		self.listview = listview
 		self.isHeader = isHeader
 		self.data = data
 		self.canEdit = canEdit
+		self.canDelete = canDelete
 		self._initUI(model)
 
 	def _initUI(self, arr):
@@ -46,12 +47,12 @@ class ListViewItem (QWidget):
 				btnEdit.setFlat(True)
 				btnEdit.clicked.connect(self._onEdit)
 				box.layout().addWidget(btnEdit)
-
-			btnDel = loader.buttonIcon("cancel.png", 15, 15)
-			btnDel.setFixedSize(20, 20)
-			btnDel.setFlat(True)
-			btnDel.clicked.connect(self._onDelete)
-			box.layout().addWidget(btnDel)
+			if self.canDelete:
+				btnDel = loader.buttonIcon("cancel.png", 15, 15)
+				btnDel.setFixedSize(20, 20)
+				btnDel.setFlat(True)
+				btnDel.clicked.connect(self._onDelete)
+				box.layout().addWidget(btnDel)
 		layout.addWidget(box)
 		self.setLayout(layout)
 

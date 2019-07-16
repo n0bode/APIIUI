@@ -1,4 +1,5 @@
 from view.salesscreen import SaleScreen
+from model.sale import Sale
 from controller.salewindow import SaleWindowController
 from .restthread import RestThread
 
@@ -37,7 +38,7 @@ class SaleScreenController(object):
 		self.view.listview.setEnabled(False)
 		self.view.listview.clear()
 		try:
-			r = requests.get("http://localhost:5050/product")
+			r = requests.get("http://localhost:8080/api/v1/products")
 			if r.status_code == 200:
 				for data in r.json():
 					print(data)
@@ -52,7 +53,7 @@ class SaleScreenController(object):
 			self.window.customerId(),
 			cart=self.window.listProduct()
 		)
-		r = requests.post("http://localhost:5050/sale", data=data.toJson())
+		r = requests.post("http://localhost:8080/api/v1/sales", data=data.toJson())
 		print(r.status_code)
 		if r.status_code == 200:
 			self.addProduct(Product(**r.json()))
@@ -60,7 +61,7 @@ class SaleScreenController(object):
 	def deleteProduct(self, item):
 		self.view.listview.setEnabled(False)
 		data = self.view.listview.itemWidget(item).data
-		r = requests.delete("http://localhost:5050/product/{}".format(data.id))
+		r = requests.delete("http://localhost:8080/api/v1/products/{}".format(data.id))
 		if r.status_code == 200:
 			self.view.listview.deleteItem(item)
 		self.view.listview.setEnabled(True)
@@ -75,7 +76,7 @@ class SaleScreenController(object):
 			self.window.stock(),
 		)
 
-		r = requests.put("http://localhost:5050/product/{}".format(data.id), data=data.toJson())
+		r = requests.put("http://localhost:8080/api/v1/products/{}".format(data.id), data=data.toJson())
 		print(r.text)
 		if r.status_code == 200:
 			data = Product(**r.json())

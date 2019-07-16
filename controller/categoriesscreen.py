@@ -36,7 +36,7 @@ class CategoriesScreenController(object):
 		self.view.listview.setEnabled(False)
 		self.view.listview.clear()
 		try:
-			r = requests.get("http://localhost:5050/category")
+			r = requests.get("http://localhost:8080/api/v1/categories")
 			if r.status_code == 200:
 				for data in r.json():
 					self.addCategory(Category(**data))
@@ -46,14 +46,14 @@ class CategoriesScreenController(object):
 
 	def postCategory(self, item):
 		data = Category(0, self.window.inputName.text())
-		r = requests.post("http://localhost:5050/category", data=data.toJson())
+		r = requests.post("http://localhost:8080/api/v1/categories", data=data.toJson())
 		if r.status_code == 200:
 			self.addCategory(Category(**r.json()))
 
 	def deleteCategory(self, item):
 		self.view.listview.setEnabled(False)
 		data = self.view.listview.itemWidget(item).data
-		r = requests.delete("http://localhost:5050/category/{}".format(data.id))
+		r = requests.delete("http://localhost:8080/api/v1/categories/{}".format(data.id))
 		if r.status_code == 200:
 			self.view.listview.deleteItem(item)
 		self.view.listview.setEnabled(True)
@@ -61,7 +61,7 @@ class CategoriesScreenController(object):
 	def putCategory(self, item):
 		self.view.listview.setEnabled(False)
 		data = Category(self.view.listview.itemWidget(item).data.id, self.window.inputName.text())
-		r = requests.put("http://localhost:5050/category/{}".format(data.id), data=data.toJson())
+		r = requests.put("http://localhost:8080/api/v1/categories/{}".format(data.id), data=data.toJson())
 		if r.status_code == 200:
 			data = Category(**r.json())
 			model = self.createModelItem(data.id, data.name)

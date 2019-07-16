@@ -15,7 +15,7 @@ class SaleWindowController:
 		self.view.customers.setEnabled(False)
 		self.view.customers.clear()
 		try:
-			r = requests.get("http://localhost:8080/customer")
+			r = requests.get("http://localhost:8080/api/v1/customers")
 			if r.status_code == 200:
 				for data in r.json():
 					print(data["name"])
@@ -29,14 +29,21 @@ class SaleWindowController:
 		self.window.products.setEnabled(False)
 		self.window.products.clear()
 		try:
-			r = requests.get("http://localhost:8080/product")
+			r = requests.get("http://localhost:8080/api/v1/products")
 			if r.status_code == 200:
 				for data in r.json():
-					self.window.products.addItem(data["name"])
+					self.addProduct(data)
 		except Exception as e:
 			print(e)
 			pass
 		self.window.products.setEnabled(True)
+
+	def addProduct(self, data):
+		model = self.createModelProduct(data["id"], data["name"], data["price"])
+		self.window.products.createItem(data, model)
+
+	def addCart(self, data):
+		pass
 
 	def createHeaderProducts(self):
 		header = self.createModelProduct("ID", "Nome", "Preço (R$)")
@@ -61,7 +68,7 @@ class SaleWindowController:
 		thread.start()
 
 	def addSale(self, widget):
-		pass
+		print(widget)
 		
 	def showAddProductWindow(self):
 		self.window.clear()

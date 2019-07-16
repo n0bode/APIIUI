@@ -7,12 +7,14 @@ class ListView(QListWidget):
 	onEditItem = pyqtSignal(QListWidgetItem)
 	onDeleteItem = pyqtSignal(QListWidgetItem)
 
-	def __init__(self, header=None, *args):
+	def __init__(self, header=None, canEdit=True, canDelete=True, *args):
 		super(ListView, self).__init__(*args)
 		self.setAlternatingRowColors(True)
 		self.header = header
 		self.onFilter = None
 		self._lastPattern = ""
+		self.canEdit = canEdit
+		self.canDelete = canDelete
 		if header is not None:
 			self.createHeader()
 
@@ -56,7 +58,7 @@ class ListView(QListWidget):
 					item.setHidden(True)
 
 	def createWidget(self, item, data, model):
-		return ListViewItem(self, item, data, model)
+		return ListViewItem(self, item, data, model, canEdit=self.canEdit, canDelete=self.canDelete)
 
 	def createHeader(self, header):
 		self.header = header

@@ -1,7 +1,6 @@
 from PyQt5.Qt import Qt, QSize, QDate
 from PyQt5.QtWidgets import QWidget, QLabel, QFrame, QLineEdit, QSpinBox, QDoubleSpinBox, QHBoxLayout, QVBoxLayout, QPushButton, QComboBox, QDateEdit, QMessageBox
 from .widgets.dialog import Dialog
-from controller.restthread import RestThread
 import requests
 import loader
 
@@ -65,15 +64,6 @@ class ProductWindow(Dialog):
 	def date(self):
 		return self._date.date().toString("dd/MM/yyyy")
 
-	def getCategory(self, item):
-		self.inputCategory.setEnabled(False)
-		self.inputCategory.clear()
-		r = requests.get("http://localhost:5050/category")
-		if r.status_code == 200:
-			arr = [x["name"] for x in r.json()]
-			self.inputCategory.addItems(arr)
-			self.inputCategory.setEnabled(True)
-
 	def setData(self, data):
 		self._name.setText(data.name)
 		self._price.setValue(data.price)
@@ -82,9 +72,6 @@ class ProductWindow(Dialog):
 
 	def show(self):
 		super(ProductWindow, self).show()
-		loadCategory = RestThread(self)
-		loadCategory.update.connect(self.getCategory)
-		loadCategory.start()
 
 	def checkSuccess(self):
 		if len(self._name.text()) == 0:

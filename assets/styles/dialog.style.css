@@ -59,38 +59,12 @@ Stack [hint=true]{
 }
 
 
-QListWidget{
-	background-color: white;
-	opacity: 1;
-	border-style: none;
-	border-radius: 0px;
-	show-decoration-selected:1;
+QListWidget QPushButton{
+	background-color: transparent;
+	border:none;
 }
 
-QListWidget::item:hover{
-	background-color: rgba(84, 159, 206, 0.25); 
-}
-
-QListWidget::item::alternate:hover{
-	background-color: rgba(84, 159, 206, 0.25); 
-}
-
-QListWidget::item::alternate{
-	background-color: rgba(84, 159, 206, 0.01); 
-}
-
-QListWidget::item::alternate:selected{
-	background-color: rgba(84, 159, 206, 0.5); 
-} 
-
-QListWidget::item:selected{
-	background-color: rgba(84, 159, 206, 0.5); 
-}
-
-QListWidget QLabel, QListWidget QPushButton{
-	color: #444;
-	padding-left: 5px;
-	text-align: left;
-	border-left: solid 1px #AAA;
-	border: none;
+QListWidget QPushButton:hover{
+	background-color: transparent;
+	border:none;
 }

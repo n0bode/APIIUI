@@ -41,7 +41,7 @@ class ProductsScreenController(object):
 		self.view.listview.setEnabled(False)
 		self.view.listview.clear()
 		try:
-			r = requests.get("http://localhost:5050/product")
+			r = requests.get("http://localhost:8080/api/v1/products")
 			if r.status_code == 200:
 				for data in r.json():
 					print(data)
@@ -49,6 +49,15 @@ class ProductsScreenController(object):
 		except:
 			pass
 		self.view.listview.setEnabled(True)
+
+	def getCategory(self):
+		self.window.inputCategory.setEnabled(False)
+		self.window.inputCategory.clear()
+		r = requests.get("http://localhost:8080/api/v1/categories")
+		if r.status_code == 200:
+			arr = [x["name"] for x in r.json()]
+			self.window.inputCategory.addItems(arr)
+			self.window.inputCategory.setEnabled(True)
 
 	def postProduct(self, item):
 		data = Product(
@@ -58,7 +67,7 @@ class ProductsScreenController(object):
 			self.window.price(),
 			self.window.stock(),
 		)
-		r = requests.post("http://localhost:5050/product", data=data.toJson())
+		r = requests.post("http://localhost:8080/api/v1/products", data=data.toJson())
 		print(r.text)
 		print(r.status_code)
 		if r.status_code == 200:
@@ -67,7 +76,7 @@ class ProductsScreenController(object):
 	def deleteProduct(self, item):
 		self.view.listview.setEnabled(False)
 		data = self.view.listview.itemWidget(item).data
-		r = requests.delete("http://localhost:5050/product/{}".format(data.id))
+		r = requests.delete("http://localhost:8080/api/v1/products/{}".format(data.id))
 		if r.status_code == 200:
 			self.view.listview.deleteItem(item)
 		self.view.listview.setEnabled(True)
@@ -82,7 +91,7 @@ class ProductsScreenController(object):
 			self.window.stock(),
 		)
 
-		r = requests.put("http://localhost:5050/product/{}".format(data.id), data=data.toJson())
+		r = requests.put("http://localhost:8080/api/v1/products/{}".format(data.id), data=data.toJson())
 		print(r.text)
 		if r.status_code == 200:
 			data = Product(**r.json())
@@ -101,6 +110,7 @@ class ProductsScreenController(object):
 		self.window.onSuccess = self.onAddNewItem
 		self.window.clear()		
 		self.window.setTitle("Adicionando Produto")
+		self.getCategory()
 		self.window.show()
 
 	def showEditItem(self, item):

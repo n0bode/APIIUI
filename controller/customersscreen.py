@@ -32,7 +32,7 @@ class CustomersScreenController(object):
 		self.view.listview.setEnabled(False)
 		self.view.listview.clear()
 		try:
-			r = requests.get("http://localhost:5050/customer")
+			r = requests.get("http://localhost:8080/api/v1/customers")
 			if r.status_code == 200:
 				for data in r.json():
 					self.addCustomer(Customer(**data))
@@ -47,14 +47,14 @@ class CustomersScreenController(object):
 			self.window.email(),
 			self.window.phone(),
 		)
-		r = requests.post("http://localhost:5050/customer", data=data.toJson())
+		r = requests.post("http://localhost:8080/api/v1/customers", data=data.toJson())
 		if r.status_code == 200:
 			self.addCustomer(Customer(**r.json()))
 
 	def deleteCustomer(self, item):
 		self.view.listview.setEnabled(False)
 		data = self.view.listview.itemWidget(item).data
-		r = requests.delete("http://localhost:5050/customer/{}".format(data.id))
+		r = requests.delete("http://localhost:8080/api/v1/customers/{}".format(data.id))
 		if r.status_code == 200:
 			self.view.listview.deleteItem(item)
 		self.view.listview.setEnabled(True)
@@ -67,7 +67,7 @@ class CustomersScreenController(object):
 			self.window.email(),
 			self.window.phone(),
 		)
-		r = requests.put("http://localhost:5050/customer/{}".format(data.id), data=data.toJson())
+		r = requests.put("http://localhost:8080/api/v1/customers/{}".format(data.id), data=data.toJson())
 		if r.status_code == 200:
 			data = Customer(**r.json())
 			model = self.createModelItem(data.id, data.name, data.email, data.phone)

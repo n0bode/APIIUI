@@ -12,7 +12,7 @@ class SelectProductWindow(Dialog):
 		self._initUI()
 
 	def _initUI(self):
-		self.products = ListView()	
+		self.products = ListView(canEdit=False, canDelete=False)	
 		self.products.setFixedHeight(475)
 	
 		self.addField("Produtos", self.products)
