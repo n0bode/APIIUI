@@ -1,0 +1,96 @@
+Dialog {
+	background-color: #eff4f8;
+	border: 2px solid #444;
+}
+
+QLabel {
+	color: #444;
+}
+
+#topbar{
+	border-radius: 0;
+}
+
+#buttonClose{
+	border: none;
+}
+
+QPushButton{
+	background-color: #FFF;
+	border: 1px solid #EEE;
+	padding: 5px;
+	color:#444;
+	border-radius: 0px;
+}
+
+QPushButton:hover{
+	background-color: #F0F0F0;
+	border: 1px solid #EEE;
+	border-radius: 2px;
+}
+
+QLineEdit, QDoubleSpinBox, 
+QComboBox, QSpinBox, QDateEdit{
+	color:black;
+	background: #F0F0F0;
+	border-right: none;
+	border:none;
+	border-bottom: 1px solid #EEE;
+	background-color: transparent;
+	border-radius: 0;
+}
+
+QLineEdit:hover, QDoubleSpinBox:hover, 
+QComboBox:hover, QSpinBox:hover{
+	border-bottom: 1px solid #2dd1ac;
+}
+
+QLineEdit:focus, QDoubleSpinBox:focus, 
+QComboBox:focus, QSpinBox:focus{
+	border-bottom: 2px solid #2dd1ac;
+}
+
+QComboBox::drop-down{
+	border: none;
+}
+
+Stack [hint=true]{
+	background-color: #f4d1cb;
+}
+
+
+QListWidget{
+	background-color: white;
+	opacity: 1;
+	border-style: none;
+	border-radius: 0px;
+	show-decoration-selected:1;
+}
+
+QListWidget::item:hover{
+	background-color: rgba(84, 159, 206, 0.25); 
+}
+
+QListWidget::item::alternate:hover{
+	background-color: rgba(84, 159, 206, 0.25); 
+}
+
+QListWidget::item::alternate{
+	background-color: rgba(84, 159, 206, 0.01); 
+}
+
+QListWidget::item::alternate:selected{
+	background-color: rgba(84, 159, 206, 0.5); 
+} 
+
+QListWidget::item:selected{
+	background-color: rgba(84, 159, 206, 0.5); 
+}
+
+QListWidget QLabel, QListWidget QPushButton{
+	color: #444;
+	padding-left: 5px;
+	text-align: left;
+	border-left: solid 1px #AAA;
+	border: none;
+}

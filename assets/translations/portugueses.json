@@ -1,0 +1,15 @@
+{
+	"products":"Produtos",
+	"sales":"Vendas",
+	"clients":"Clientes",
+	"categories":"Categorias",
+	"product":"Produto",
+	"seller":"Vendendora",
+	"earnings":"Ganhos",
+	"paymethod":"Método Pag",
+	"name":"Nome",
+	"idade":"Age",
+	"date":"Data",
+	"add":"Adicionar",
+	"rem":"Remover"
+}
