@@ -22,7 +22,9 @@ class CustomerWindow(Dialog):
 
 		self._phone = QLineEdit()
 		self._phone.setFixedHeight(30)
-		self._phone.setPlaceholderText("7777777777")
+		self._phone.setPlaceholderText("(77) ")
+		rg = QRegularExpression("^((\\+?(\\d{2}))\\s?)?((\\d{2})|(\\((\\d{2})\\))\\s?)?(\\d{3,15})(\\-(\\d{3,15}))?$", QRegularExpression.CaseInsensitiveOption)
+		self._phone.setValidator(QRegularExpressionValidator(rg, self))
 
 		self.addField("Nome do Cliente", self._name)
 		self.addField("Email", self._email)

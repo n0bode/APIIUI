@@ -14,8 +14,8 @@ class SaleWindow(Dialog):
 	def _initUI(self):
 		self.customers = QComboBox()
 		self.customers.setFixedHeight(30)		
-		self.customers.addItems(["asd", "sad"])
-		self.products = ListView()
+
+		self.products = ListView(canEdit=False)
 		self.products.setFixedHeight(300)
 
 		self.label = QLabel("Valor total: 0 R$")
@@ -28,12 +28,6 @@ class SaleWindow(Dialog):
 		self.products.parent().layout().addWidget(self.buttonAddProduct)
 		super(SaleWindow, self)._initUI()
 
-	def customerId(self):
-		return self.customers.currentIndex()
-
-	def listProducts(self):
-		return self._listProducts
-
 	def clear(self):
 		self._listProducts = []
 
@@ -41,4 +35,4 @@ class SaleWindow(Dialog):
 		return self._date.date().toString("dd/MM/yyyy")
 
 	def setData(self, data):
-		self._name.setText(data.name)
+		self.customers.setText(data.name)

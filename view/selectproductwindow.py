@@ -19,7 +19,7 @@ class SelectProductWindow(Dialog):
 		super(SelectProductWindow, self)._initUI()
 
 	def getProduct(self):
-		item = self.products.item(self.products.currentIndex())
+		item = self.products.item(self.products.currentRow())
 		widget = self.products.itemWidget(item)
 		return widget.data
 
@@ -31,4 +31,5 @@ class SelectProductWindow(Dialog):
 		pass
 
 	def checkSuccess(self):
+		self.setCurrentItem(self.getProduct())
 		return True

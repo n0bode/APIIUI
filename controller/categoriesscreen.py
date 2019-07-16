@@ -48,26 +48,24 @@ class CategoriesScreenController(object):
 		data = Category(0, self.window.inputName.text())
 		r = requests.post("http://localhost:8080/api/v1/categories", data=data.toJson())
 		if r.status_code == 200:
-			self.addCategory(Category(**r.json()))
+			#self.addCategory(Category(**r.json()))
+			self.getCategory()
 
 	def deleteCategory(self, item):
-		self.view.listview.setEnabled(False)
 		data = self.view.listview.itemWidget(item).data
 		r = requests.delete("http://localhost:8080/api/v1/categories/{}".format(data.id))
 		if r.status_code == 200:
-			self.view.listview.deleteItem(item)
-		self.view.listview.setEnabled(True)
+			self.getCategory()
 
 	def putCategory(self, item):
-		self.view.listview.setEnabled(False)
 		data = Category(self.view.listview.itemWidget(item).data.id, self.window.inputName.text())
 		r = requests.put("http://localhost:8080/api/v1/categories/{}".format(data.id), data=data.toJson())
 		if r.status_code == 200:
-			data = Category(**r.json())
+			"""data = Category(**r.json())
 			model = self.createModelItem(data.id, data.name)
 			widget = self.view.listview.createWidget(item, data, model)
-			self.view.listview.setItemWidget(item, widget)
-		self.view.listview.setEnabled(True)
+			self.view.listview.setItemWidget(item, widget)"""
+			self.getCategory()
 
 	def showAddItem(self):
 		self.window.onSuccess = self.onAddNewItem

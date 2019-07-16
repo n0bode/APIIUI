@@ -44,10 +44,9 @@ class ProductsScreenController(object):
 			r = requests.get("http://localhost:8080/api/v1/products")
 			if r.status_code == 200:
 				for data in r.json():
-					print(data)
 					self.addProduct(Product(**data))
-		except:
-			pass
+		except e as Exception:
+			print(e)
 		self.view.listview.setEnabled(True)
 
 	def getCategory(self):
@@ -71,18 +70,15 @@ class ProductsScreenController(object):
 		print(r.text)
 		print(r.status_code)
 		if r.status_code == 200:
-			self.addProduct(Product(**r.json()))
+			self.getProduct()
 
 	def deleteProduct(self, item):
-		self.view.listview.setEnabled(False)
 		data = self.view.listview.itemWidget(item).data
 		r = requests.delete("http://localhost:8080/api/v1/products/{}".format(data.id))
 		if r.status_code == 200:
-			self.view.listview.deleteItem(item)
-		self.view.listview.setEnabled(True)
+			self.getProduct()
 
 	def putProduct(self, item):
-		self.view.listview.setEnabled(False)
 		data = Product(
 			self.view.listview.itemWidget(item).data.id,
 			self.window.name(),
@@ -94,17 +90,7 @@ class ProductsScreenController(object):
 		r = requests.put("http://localhost:8080/api/v1/products/{}".format(data.id), data=data.toJson())
 		print(r.text)
 		if r.status_code == 200:
-			data = Product(**r.json())
-			model = self.createModelItem(
-				data.id, 
-				data.name, 
-				self.window.inputCategory.currentText(), 
-				data.price, 
-				data.stock, 
-			)
-			widget = self.view.listview.createWidget(item, data, model)
-			self.view.listview.setItemWidget(item, widget)
-		self.view.listview.setEnabled(True)
+			self.getProduct()
 
 	def showAddItem(self):
 		self.window.onSuccess = self.onAddNewItem

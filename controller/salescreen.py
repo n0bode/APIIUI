@@ -7,7 +7,7 @@ class SaleScreenController(object):
 	def __init__(self):
 		self.view = SaleScreen(self)
 		self.thread = RestThread(self.view)
-		self.thread.update.connect(self.getProduct)
+		self.thread.update.connect(self.getSale)
 		self.thread.start()
 
 		#Set Callback
@@ -15,7 +15,6 @@ class SaleScreenController(object):
 		self.view.listview.onEditItem.connect(self.showEditItem)
 		self.view.listview.onFilter = self.filterItems
 		self.view.buttonAdd.clicked.connect(self.showAddItem)
-
 		self.window = SaleWindowController(self)
 		self.createHeader()
 
@@ -23,7 +22,7 @@ class SaleScreenController(object):
 		model = self.createModelItem(
 			sale.id, 
 			sale.customerId,
-			sale.amountPaid, 
+			sale.grossAmount, 
 		)
 		self.view.listview.createItem(product, model)
 
@@ -34,39 +33,40 @@ class SaleScreenController(object):
 	def filterItems(self, data, pattern):
 		return data.name.lower().startswith(pattern.lower())
 
-	def getProduct(self):
+	def getSale(self):
 		self.view.listview.setEnabled(False)
 		self.view.listview.clear()
 		try:
-			r = requests.get("http://localhost:8080/api/v1/products")
+			r = requests.get("http://localhost:8080/api/v1/sales")
 			if r.status_code == 200:
 				for data in r.json():
-					print(data)
-					self.addProduct(Product(**data))
+					self.addSale(Sale(**data))
 		except:
 			pass
 		self.view.listview.setEnabled(True)
+		"""
+		TERMINAR ESSA PARTE QUANDO ACABAR O 
 
-	def postProduct(self, item):
-		data = Sale(
+	def postSale(self, item):
+		sale = Sale(
 			0,
 			self.window.customerId(),
 			cart=self.window.listProduct()
 		)
-		r = requests.post("http://localhost:8080/api/v1/sales", data=data.toJson())
+		r = requests.post("http://localhost:8080/api/v1/sales", data=sale.toJson())
 		print(r.status_code)
 		if r.status_code == 200:
-			self.addProduct(Product(**r.json()))
+			self.getSale()
 
 	def deleteProduct(self, item):
 		self.view.listview.setEnabled(False)
 		data = self.view.listview.itemWidget(item).data
-		r = requests.delete("http://localhost:8080/api/v1/products/{}".format(data.id))
+		r = requests.delete("http://localhost:8080/api/v1/sales/{}".format(data.id))
 		if r.status_code == 200:
 			self.view.listview.deleteItem(item)
 		self.view.listview.setEnabled(True)
 
-	def putProduct(self, item):
+	def putSale(self, item):
 		self.view.listview.setEnabled(False)
 		data = Product(
 			self.view.listview.itemWidget(item).data.id,
@@ -76,8 +76,7 @@ class SaleScreenController(object):
 			self.window.stock(),
 		)
 
-		r = requests.put("http://localhost:8080/api/v1/products/{}".format(data.id), data=data.toJson())
-		print(r.text)
+		r = requests.put("http://localhost:8080/api/v1/sales/{}".format(data.id), data=data.toJson())
 		if r.status_code == 200:
 			data = Product(**r.json())
 			model = self.createModelItem(
@@ -87,7 +86,6 @@ class SaleScreenController(object):
 				data.price, 
 				data.stock, 
 			)
-
 			widget = self.view.listview.createWidget(item, data, model)
 			self.view.listview.setItemWidget(item, widget)
 		self.view.listview.setEnabled(True)
@@ -100,9 +98,9 @@ class SaleScreenController(object):
 		self.window.view.show()
 
 	def showEditItem(self, item):
-		product = self.view.listview.itemWidget(item).data
+		sale = self.view.listview.itemWidget(item).data
 		self.window.view.clear()	
-		self.window.view.setData(product)
+		self.window.view.setData(sale)
 		self.window.view.setTitle("Editando um Produto")
 		self.window.view.onSuccess = self.onEditItem
 		self.window.view.setCurrentItem(item)	
@@ -110,12 +108,12 @@ class SaleScreenController(object):
 
 	def onAddNewItem(self, item):
 		postThread = RestThread(self.view, data=item)
-		postThread.update.connect(self.postProduct)
+		postThread.update.connect(self.postSale)
 		postThread.start()
 
 	def onEditItem(self, item):
 		putThread = RestThread(self.view, item)
-		putThread.update.connect(self.putProduct)
+		putThread.update.connect(self.putSale)
 		putThread.start()
 
 	def showDeleteAlert(self, item):

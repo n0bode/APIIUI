@@ -49,18 +49,16 @@ class CustomersScreenController(object):
 		)
 		r = requests.post("http://localhost:8080/api/v1/customers", data=data.toJson())
 		if r.status_code == 200:
-			self.addCustomer(Customer(**r.json()))
+			self.getCustomer()
+			#self.addCustomer(Customer(**r.json()))
 
 	def deleteCustomer(self, item):
-		self.view.listview.setEnabled(False)
 		data = self.view.listview.itemWidget(item).data
 		r = requests.delete("http://localhost:8080/api/v1/customers/{}".format(data.id))
 		if r.status_code == 200:
-			self.view.listview.deleteItem(item)
-		self.view.listview.setEnabled(True)
+			self.getCustomer()
 
 	def putCustomer(self, item):
-		self.view.listview.setEnabled(False)
 		data = Customer(
 			self.view.listview.itemWidget(item).data.id,
 			self.window.name(),
@@ -69,11 +67,7 @@ class CustomersScreenController(object):
 		)
 		r = requests.put("http://localhost:8080/api/v1/customers/{}".format(data.id), data=data.toJson())
 		if r.status_code == 200:
-			data = Customer(**r.json())
-			model = self.createModelItem(data.id, data.name, data.email, data.phone)
-			widget = self.view.listview.createWidget(item, data, model)
-			self.view.listview.setItemWidget(item, widget)
-		self.view.listview.setEnabled(True)
+			self.getCustomer()
 
 	def createHeader(self):
 		header = self.createModelItem("ID", "Nome", "Email", "Telefone")
@@ -111,7 +105,7 @@ class CustomersScreenController(object):
 		result = QMessageBox.warning(self.view, "Apagar Cliente", "Deseja apagar esse Cliente?", QMessageBox.Ok | QMessageBox.Cancel)
 		if result == QMessageBox.Ok:
 			deleteThread = RestThread(self.view, item)
-			deleteThread.update.connect(self.deleteCategory)
+			deleteThread.update.connect(self.deleteCustomer)
 			deleteThread.start()
 
 	def createModelItem(self, id, name, email, phone):
