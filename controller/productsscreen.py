@@ -26,7 +26,7 @@ class ProductsScreenController(object):
 		model = self.createModelItem(
 			product.id, 
 			product.name,
-			product.categoryID, 
+			self.getCategoryName(product.categoryID), 
 			product.price, 
 			product.stock, 
 		)
@@ -40,15 +40,15 @@ class ProductsScreenController(object):
 		return data.name.lower().startswith(pattern.lower())
 
 	def getProduct(self):
+		self.getCategory()
+
 		self.view.listview.setEnabled(False)
 		self.view.listview.clear()
-		try:
-			r = requests.get("http://localhost:8080/api/v1/products")
-			if r.status_code == 200:
-				for data in r.json():
-					self.addProduct(Product(**data))
-		except e as Exception:
-			print(e)
+
+		r = requests.get("http://localhost:8080/api/v1/products")
+		if r.status_code == 200:
+			for data in r.json():
+				self.addProduct(Product(**data))
 		self.view.listview.setEnabled(True)
 
 	def getCategory(self):
@@ -132,6 +132,12 @@ class ProductsScreenController(object):
 
 	def getCategoryID(self):
 		return self.categories[self.window.inputCategory.currentIndex()].id
+
+	def getCategoryName(self, id):
+		find = list(filter(lambda x: x.id == id, self.categories))
+		if len(find) > 0:
+			return find[0].name
+		return None
 
 	def setCategoryID(self, id):
 		for i in range(len(self.categories)):

@@ -18,7 +18,7 @@ QLabel {
 QPushButton{
 	background-color: #FFF;
 	border: 1px solid #EEE;
-	padding: 5px;
+	padding: 8px;
 	color:#444;
 	border-radius: 0px;
 }
@@ -61,10 +61,12 @@ Stack [hint=true]{
 
 QListWidget QPushButton{
 	background-color: transparent;
+	padding: 5px;
 	border:none;
 }
 
 QListWidget QPushButton:hover{
 	background-color: transparent;
+	padding: 5px;
 	border:none;
 }

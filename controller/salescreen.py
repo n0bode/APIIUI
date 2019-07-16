@@ -1,7 +1,9 @@
 from view.salesscreen import SaleScreen
 from model.sale import Sale
+from PyQt5.QtWidgets import QMessageBox
 from controller.salewindow import SaleWindowController
 from .restthread import RestThread
+import requests
 
 class SaleScreenController(object):
 	def __init__(self):
@@ -15,16 +17,17 @@ class SaleScreenController(object):
 		self.view.listview.onEditItem.connect(self.showEditItem)
 		self.view.listview.onFilter = self.filterItems
 		self.view.buttonAdd.clicked.connect(self.showAddItem)
-		self.window = SaleWindowController(self)
+		
 		self.createHeader()
 
 	def addSale(self, sale):
+		print(sale)
 		model = self.createModelItem(
 			sale.id, 
-			sale.customerId,
+			self.getCustomerName(sale.customerId),
 			sale.grossAmount, 
 		)
-		self.view.listview.createItem(product, model)
+		self.view.listview.createItem(sale, model)
 
 	def createHeader(self):
 		header = self.createModelItem("ID", "Cliente", "Preço (R$)")
@@ -32,6 +35,11 @@ class SaleScreenController(object):
 
 	def filterItems(self, data, pattern):
 		return data.name.lower().startswith(pattern.lower())
+
+	def getCustomerName(self, id):
+		c = requests.get("http://localhost:8080/api/v1/customers/{}".format(id))
+		if c.status_code == 200:
+			return c.json()["name"]
 
 	def getSale(self):
 		self.view.listview.setEnabled(False)
@@ -41,8 +49,8 @@ class SaleScreenController(object):
 			if r.status_code == 200:
 				for data in r.json():
 					self.addSale(Sale(**data))
-		except:
-			pass
+		except Exception as e:
+			print(e)
 		self.view.listview.setEnabled(True)
 		
 		# TERMINAR ESSA PARTE QUANDO ACABAR O 
@@ -51,7 +59,7 @@ class SaleScreenController(object):
 		sale = Sale(
 			0,
 			self.window.customerId(),
-			cart=self.window.listProduct()
+			cart=self.window.getCart()
 		)
 		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 		r = requests.post("http://localhost:8080/api/v1/sales", data=sale.toJson(), headers=headers)
@@ -63,6 +71,7 @@ class SaleScreenController(object):
 		self.view.listview.setEnabled(False)
 		data = self.view.listview.itemWidget(item).data
 		r = requests.delete("http://localhost:8080/api/v1/sales/{}".format(data.id))
+		print(r.status_code)
 		if r.status_code == 204:
 			self.view.listview.deleteItem(item)
 		self.view.listview.setEnabled(True)
@@ -92,21 +101,21 @@ class SaleScreenController(object):
 		self.view.listview.setEnabled(True)
 
 	def showAddItem(self):
-		self.window.view.onSuccess = self.onAddNewItem
-		self.window.view.clear()		
+		self.window = SaleWindowController(self)
+		self.window.view.onSuccess = self.onAddNewItem	
 		self.window.updateCustomer()
 		self.window.view.setTitle("Adicionando Produto")
 		self.window.view.show()
 
 	def showEditItem(self, item):
 		sale = self.view.listview.itemWidget(item).data
-		self.window.view.clear()	
-		self.window.view.setData(sale)
-		self.window.view.setTitle("Editando um Produto")
-		self.window.view.onSuccess = self.onEditItem
-		self.window.view.setCurrentItem(item)	
-		self.window.view.show()
-
+		self.window = SaleWindowController(self)
+		self.window.updateCustomer()
+		self.window.view.setTitle("Lista da Compra")
+		self.window.getItems(sale.id)
+		self.window.view.setCurrentItem(item)
+		self.window.setData(sale)	
+		
 	def onAddNewItem(self, item):
 		postThread = RestThread(self.view, data=item)
 		postThread.update.connect(self.postSale)

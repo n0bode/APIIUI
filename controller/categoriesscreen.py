@@ -63,12 +63,8 @@ class CategoriesScreenController(object):
 		data = Category(self.view.listview.itemWidget(item).data.id, self.window.inputName.text())
 		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 		r = requests.put("http://localhost:8080/api/v1/categories", data=data.toJson(), headers=headers)
-		print(r.status_code)
+		print(r.text)
 		if r.status_code == 204:
-			"""data = Category(**r.json())
-			model = self.createModelItem(data.id, data.name)
-			widget = self.view.listview.createWidget(item, data, model)
-			self.view.listview.setItemWidget(item, widget)"""
 			self.getCategory()
 
 	def showAddItem(self):

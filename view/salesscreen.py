@@ -11,7 +11,7 @@ class SaleScreen(QFrame):
 		self._initUI()
 
 	def _initUI(self):
-		self.listview = ListView()
+		self.listview = ListView(canDelete=False)
 		toolbar = self._createToolBarProduct()
 		layout = QVBoxLayout()
 		layout.addWidget(toolbar)

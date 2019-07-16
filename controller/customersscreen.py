@@ -76,7 +76,7 @@ class CustomersScreenController(object):
 		self.view.listview.createHeader(header)
 
 	def filterItems(self, data, pattern):
-		return data.name.lower().startswith(pattern.lower())
+		return data.name.lower().startswith(pattern.lower()) or data.email.lower().startswith(pattern.lower())
 
 	def showAddItem(self):
 		self.window.onSuccess = self.onAddNewItem

@@ -76,6 +76,15 @@ class Dialog(QWidget):
 	def setData(self, data):
 		pass
 
+	def addWidget(self, widget):
+		frame = Stack()
+		frame.setLayout(QVBoxLayout())
+		frame.layout().setContentsMargins(5, 5, 5, 5)
+		
+		frame.layout().addWidget(widget)
+		self.centralLayout.addWidget(frame)
+		frame.setProperty("hint", False)
+
 	def addField(self, text, widget):
 		frame = Stack()
 		frame.setLayout(QVBoxLayout())

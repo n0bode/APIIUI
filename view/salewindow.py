@@ -18,13 +18,13 @@ class SaleWindow(Dialog):
 		self.products = ListView(canEdit=False)
 		self.products.setFixedHeight(300)
 
-		self.label = QLabel("Valor total: 0 R$")
+		self.grossText = QLabel("Valor total: 0 R$")
 		self.buttonAddProduct = QPushButton("Adicionar um Produto")
 		self.buttonAddProduct.setFixedHeight(30)
 
 		self.addField("Nome do Cliente", self.customers)
 		self.addField("Produtos", self.products)
-		self.products.parent().layout().addWidget(self.label)
+		self.products.parent().layout().addWidget(self.grossText)
 		self.products.parent().layout().addWidget(self.buttonAddProduct)
 		super(SaleWindow, self)._initUI()
 
@@ -35,4 +35,4 @@ class SaleWindow(Dialog):
 		return self._date.date().toString("dd/MM/yyyy")
 
 	def setData(self, data):
-		self.customers.setText(data.name)
+		pass
