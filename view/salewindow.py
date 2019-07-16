@@ -24,6 +24,7 @@ class SaleWindow(Dialog):
 
 		self.addField("Nome do Cliente", self.customers)
 		self.addField("Produtos", self.products)
+		
 		self.products.parent().layout().addWidget(self.grossText)
 		self.products.parent().layout().addWidget(self.buttonAddProduct)
 		super(SaleWindow, self)._initUI()

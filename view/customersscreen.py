@@ -33,7 +33,7 @@ class CustomersScreen(QFrame):
 		self.buttonAdd.setToolTip("Adicionar um novo Cliente")
 		self.buttonAdd.clicked.connect(self.controller.showAddItem)
 			
-		self.searchBar = SearchBar(placeholder="Nome")
+		self.searchBar = SearchBar(placeholder="buscar")
 		self.searchBar.submitted.connect(self.listview.filter)
 
 		layout.addWidget(self.buttonAdd)

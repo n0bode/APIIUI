@@ -61,12 +61,13 @@ Stack [hint=true]{
 
 QListWidget QPushButton{
 	background-color: transparent;
-	padding: 5px;
+	padding: 2px;
+	font-size:12px;
 	border:none;
 }
 
 QListWidget QPushButton:hover{
 	background-color: transparent;
-	padding: 5px;
+	padding: 2px;
 	border:none;
 }

@@ -103,7 +103,7 @@ class SaleScreenController(object):
 		self.window = SaleWindowController(self)
 		self.window.view.onSuccess = self.onAddNewItem	
 		self.window.updateCustomer()
-		self.window.view.setTitle("Adicionando Produto")
+		self.window.view.setTitle("Adicionando um Venda")
 		self.window.view.show()
 
 	def showEditItem(self, item):
@@ -116,9 +116,11 @@ class SaleScreenController(object):
 		self.window.setData(sale)	
 		
 	def onAddNewItem(self, item):
-		postThread = RestThread(self.view, data=item)
-		postThread.update.connect(self.postSale)
-		postThread.start()
+		if len(self.window.getCart()) > 0:
+			postThread = RestThread(self.view, data=item)
+			postThread.update.connect(self.postSale)
+			postThread.start()
+			
 
 	def onEditItem(self, item):
 		putThread = RestThread(self.view, item)

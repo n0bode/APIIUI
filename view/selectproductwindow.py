@@ -17,7 +17,7 @@ class SelectProductWindow(Dialog):
 		self.products.setFixedHeight(450)
 		
 		self.searchBar = SearchBar()
-		self.searchBar.setPlaceHolder("Nome")
+		self.searchBar.setPlaceHolder("buscar")
 		self.searchBar.submitted.connect(self.products.filter)
 
 		self.addWidget(self.searchBar)

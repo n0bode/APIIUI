@@ -6,8 +6,9 @@ import loader
 class Dialog(QWidget):
 	def __init__(self, parent, *args):
 		super(Dialog, self).__init__(parent=parent, *args)
-		self.setWindowFlags(Qt.Dialog)
+		self.setWindowFlags(Qt.Dialog | Qt.WindowCloseButtonHint)
 		self.onSuccess = None
+		self.onCheckSuccess = None
 		self.currentItem = None
 		self.centralLayout = QVBoxLayout()
 		self.centralLayout.setContentsMargins(5, 5, 5, 5)
@@ -21,7 +22,7 @@ class Dialog(QWidget):
 		btnAdd.clicked.connect(self._onsuccess)
 		
 		btnRem = loader.buttonIcon("cancel.png")
-		btnRem.setText("Discartar")
+		btnRem.setText("Cancelar")
 		btnRem.clicked.connect(self.close)
 
 		boxBtn = QHBoxLayout()
@@ -48,16 +49,16 @@ class Dialog(QWidget):
 		topbar.setLayout(QHBoxLayout())
 		topbar.layout().setAlignment(Qt.AlignLeft)
 
-		buttonClose = loader.buttonIcon("close", 35, 35)
+		"""buttonClose = loader.buttonIcon("close", 35, 35)
 		buttonClose.setObjectName("buttonClose")
 		buttonClose.setFixedSize(35, 35)
 		buttonClose.setFlat(True)
-		buttonClose.clicked.connect(self.close)		
+		buttonClose.clicked.connect(self.close)		"""
 
 		self._title = QLabel()
 		topbar.layout().addWidget(self._title)
 		topbar.layout().addStretch()
-		topbar.layout().addWidget(buttonClose)
+		#topbar.layout().addWidget(buttonClose)
 		return topbar
 
 	def setCurrentItem(self, item):
@@ -103,4 +104,7 @@ class Dialog(QWidget):
 		self.update()
 
 	def checkSuccess(self):
+		if self.onCheckSuccess != None:
+			return self.onCheckSuccess
 		return True
+

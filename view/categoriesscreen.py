@@ -31,7 +31,7 @@ class CategoriesScreen(QFrame):
 		self.buttonAdd.setText("Adicionar Categoria")
 		self.buttonAdd.setToolTip("Adicionar um nova Categoria")
 		self.buttonAdd.clicked.connect(self.controller.showAddItem)
-		self.searchBar = SearchBar(placeholder="Nome")
+		self.searchBar = SearchBar(placeholder="buscar")
 		self.searchBar.submitted.connect(self.listview.filter)
 
 		layout.addWidget(self.buttonAdd)

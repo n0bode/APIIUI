@@ -31,7 +31,7 @@ class SaleScreen(QFrame):
 		self.buttonAdd.setText("Adicionar Venda")
 		self.buttonAdd.setToolTip("Adicionar uma nova venda")
 		
-		self.searchBar = SearchBar(placeholder="Nome")
+		self.searchBar = SearchBar(placeholder="buscar")
 		self.searchBar.submitted.connect(self.listview.filter)
 
 		layout.addWidget(self.buttonAdd)

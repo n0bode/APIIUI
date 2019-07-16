@@ -4,6 +4,7 @@ from .restthread import RestThread
 from model.product import Product
 from model.customer import Customer
 from model.saleitem import SaleItem
+from PyQt5.QtWidgets import QMessageBox
 import requests
 
 class SaleWindowController:
@@ -11,16 +12,18 @@ class SaleWindowController:
 		self.view = SaleWindow(parent.view)
 		self.view.products.onDeleteItem.connect(self.remCart)
 		self.window = SelectProductWindow(self.view)
+		self.window.setTitle("Adicionando ao carrinho")
 		self.parent = parent
-		self._gross = 0
 		self._cart = []
 		self._customers = []
 		self.saleID = 0
 		self.createHeaderProducts()
 		self.createHeaderCart()
 
+		self.view.checkSuccess = self.checkSuccess
 		self.view.buttonAddProduct.clicked.connect(self.showAddProductWindow)
 		self.window.products.onFilter = self.filterItems
+		
 
 	def filterItems(self, data, pattern):
 		return data.name.lower().startswith(pattern.lower())
@@ -85,19 +88,17 @@ class SaleWindowController:
 		self.window.products.createItem(product, model)
 
 	def updateGross(self):
-		self.view.grossText.setText("Valor Total: {:.2f} R$".format(self._gross))
+		self.view.grossText.setText("Valor Total: {:.2f} R$".format(self.getGross()))
 
 	def addCart(self, product):
 		model = self.createModelCart(product.id, product.name, product.price)
 		self.view.products.createItem(product, model)
 		self._cart.append(product)
-		self._gross += float(product.price)
 		self.updateGross()
 
 	def remCart(self, item):
 		product = self.view.products.itemWidget(item).data
 		self.view.products.deleteItem(item)
-		self._gross -= float(product.price)
 		self.updateGross()
 
 	def createHeaderCart(self):
@@ -136,6 +137,9 @@ class SaleWindowController:
 	def addSale(self, widget):
 		print(widget)
 	
+	def getGross(self):
+		return sum([c.price for c in self._cart])
+
 	def showAddProductWindow(self):
 		self.window.clear()
 		self.window.show()
@@ -150,6 +154,11 @@ class SaleWindowController:
 
 	def setData(self, sale):
 		self.sale = sale
-		self._gross = sale.grossAmount
 		self.updateGross()
 		#self.view.customers.addItem(s)
+
+	def checkSuccess(self):
+		if len(self._cart) == 0:
+			QMessageBox.about(self.view, "Adicionar Produto", "Precisa adicionar um produto")
+			return False
+		return True

@@ -8,6 +8,7 @@ class CustomerWindow(Dialog):
 		super(CustomerWindow, self).__init__(parent, *args)
 		self.setFixedSize(400, 600)
 		self._initUI()
+		self.checkSuccess = self.checkSuccess
 
 	def _initUI(self):
 		self._name = QLineEdit()
