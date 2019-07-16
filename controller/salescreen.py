@@ -44,8 +44,8 @@ class SaleScreenController(object):
 		except:
 			pass
 		self.view.listview.setEnabled(True)
-		"""
-		TERMINAR ESSA PARTE QUANDO ACABAR O 
+		
+		# TERMINAR ESSA PARTE QUANDO ACABAR O 
 
 	def postSale(self, item):
 		sale = Sale(
@@ -53,7 +53,8 @@ class SaleScreenController(object):
 			self.window.customerId(),
 			cart=self.window.listProduct()
 		)
-		r = requests.post("http://localhost:8080/api/v1/sales", data=sale.toJson())
+		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+		r = requests.post("http://localhost:8080/api/v1/sales", data=sale.toJson(), headers=headers)
 		print(r.status_code)
 		if r.status_code == 200:
 			self.getSale()
@@ -62,7 +63,7 @@ class SaleScreenController(object):
 		self.view.listview.setEnabled(False)
 		data = self.view.listview.itemWidget(item).data
 		r = requests.delete("http://localhost:8080/api/v1/sales/{}".format(data.id))
-		if r.status_code == 200:
+		if r.status_code == 204:
 			self.view.listview.deleteItem(item)
 		self.view.listview.setEnabled(True)
 
@@ -75,8 +76,8 @@ class SaleScreenController(object):
 			self.window.price(),
 			self.window.stock(),
 		)
-
-		r = requests.put("http://localhost:8080/api/v1/sales/{}".format(data.id), data=data.toJson())
+		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+		r = requests.put("http://localhost:8080/api/v1/sales/{}".format(data.id), data=data.toJson(), headers=headers)
 		if r.status_code == 200:
 			data = Product(**r.json())
 			model = self.createModelItem(

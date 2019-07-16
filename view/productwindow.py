@@ -68,7 +68,7 @@ class ProductWindow(Dialog):
 		self._name.setText(data.name)
 		self._price.setValue(data.price)
 		self._stock.setValue(data.stock)
-		self.inputCategory.setCurrentIndex(data.categoryId)
+		
 
 	def show(self):
 		super(ProductWindow, self).show()

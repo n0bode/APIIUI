@@ -47,7 +47,8 @@ class CustomersScreenController(object):
 			self.window.email(),
 			self.window.phone(),
 		)
-		r = requests.post("http://localhost:8080/api/v1/customers", data=data.toJson())
+		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+		r = requests.post("http://localhost:8080/api/v1/customers", data=data.toJson(), headers=headers)
 		if r.status_code == 200:
 			self.getCustomer()
 			#self.addCustomer(Customer(**r.json()))
@@ -55,7 +56,7 @@ class CustomersScreenController(object):
 	def deleteCustomer(self, item):
 		data = self.view.listview.itemWidget(item).data
 		r = requests.delete("http://localhost:8080/api/v1/customers/{}".format(data.id))
-		if r.status_code == 200:
+		if r.status_code == 204:
 			self.getCustomer()
 
 	def putCustomer(self, item):
@@ -65,8 +66,9 @@ class CustomersScreenController(object):
 			self.window.email(),
 			self.window.phone(),
 		)
-		r = requests.put("http://localhost:8080/api/v1/customers/{}".format(data.id), data=data.toJson())
-		if r.status_code == 200:
+		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+		r = requests.put("http://localhost:8080/api/v1/customers", data=data.toJson(), headers=headers)
+		if r.status_code == 204:
 			self.getCustomer()
 
 	def createHeader(self):

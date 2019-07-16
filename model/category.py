@@ -5,4 +5,6 @@ class Category(object):
 		self.name = name
 
 	def toJson(self):
-		return json.dumps(self.__dict__)
+		arr = json.dumps(self.__dict__)
+		print(arr)
+		return arr

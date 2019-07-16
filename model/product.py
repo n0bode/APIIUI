@@ -1,12 +1,14 @@
 import json
 
 class Product:
-	def __init__(self, id, name, categoryId, price, stock):
+	def __init__(self, id, name, categoryID, price, stock):
 		self.id = id
 		self.name = name
-		self.categoryId = categoryId
+		self.categoryID = categoryID
 		self.price = price
 		self.stock = stock
 		
 	def toJson(self):
-		return json.dumps(self.__dict__)
+		arr = json.dumps(self.__dict__)
+		print(arr)
+		return arr

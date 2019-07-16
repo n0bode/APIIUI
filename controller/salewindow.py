@@ -31,7 +31,7 @@ class SaleWindowController:
 		self.window.products.setEnabled(False)
 		self.window.products.clear()
 		try:
-			r = requests.get("http://localhost:8080/api/v1/products")
+			r = requests.get("http://localhost:8080/api/v1/products/inStock")
 			if r.status_code == 200:
 				for data in r.json():
 					self.addProduct(data)

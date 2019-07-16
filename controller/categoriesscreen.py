@@ -46,21 +46,25 @@ class CategoriesScreenController(object):
 
 	def postCategory(self, item):
 		data = Category(0, self.window.inputName.text())
-		r = requests.post("http://localhost:8080/api/v1/categories", data=data.toJson())
+		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+		r = requests.post("http://localhost:8080/api/v1/categories", data=data.toJson(), headers=headers)
+		print(r.status_code)
 		if r.status_code == 200:
 			#self.addCategory(Category(**r.json()))
 			self.getCategory()
 
 	def deleteCategory(self, item):
-		data = self.view.listview.itemWidget(item).data
-		r = requests.delete("http://localhost:8080/api/v1/categories/{}".format(data.id))
-		if r.status_code == 200:
+		category = self.view.listview.itemWidget(item).data
+		r = requests.delete("http://localhost:8080/api/v1/categories/{}".format(category.id))
+		if r.status_code == 204:
 			self.getCategory()
 
 	def putCategory(self, item):
 		data = Category(self.view.listview.itemWidget(item).data.id, self.window.inputName.text())
-		r = requests.put("http://localhost:8080/api/v1/categories/{}".format(data.id), data=data.toJson())
-		if r.status_code == 200:
+		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+		r = requests.put("http://localhost:8080/api/v1/categories", data=data.toJson(), headers=headers)
+		print(r.status_code)
+		if r.status_code == 204:
 			"""data = Category(**r.json())
 			model = self.createModelItem(data.id, data.name)
 			widget = self.view.listview.createWidget(item, data, model)

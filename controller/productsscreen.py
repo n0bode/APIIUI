@@ -1,6 +1,7 @@
 from view.productsscreen import ProductsScreen
 from view.productwindow import ProductWindow
 from model.product import Product
+from model.category import Category
 from PyQt5.QtWidgets import QMessageBox
 from .restthread import RestThread
 import requests
@@ -17,6 +18,7 @@ class ProductsScreenController(object):
 		self.view.listview.onEditItem.connect(self.showEditItem)
 		self.view.listview.onFilter = self.filterItems
 
+		self.categories = []
 		self.window = ProductWindow(self.view)
 		self.createHeader()
 
@@ -24,7 +26,7 @@ class ProductsScreenController(object):
 		model = self.createModelItem(
 			product.id, 
 			product.name,
-			product.categoryId, 
+			product.categoryID, 
 			product.price, 
 			product.stock, 
 		)
@@ -54,19 +56,20 @@ class ProductsScreenController(object):
 		self.window.inputCategory.clear()
 		r = requests.get("http://localhost:8080/api/v1/categories")
 		if r.status_code == 200:
-			arr = [x["name"] for x in r.json()]
-			self.window.inputCategory.addItems(arr)
+			self.categories = [Category(**x) for x in r.json()]
+			self.window.inputCategory.addItems([category.name for category in self.categories])
 			self.window.inputCategory.setEnabled(True)
 
 	def postProduct(self, item):
 		data = Product(
 			0,
 			self.window.name(),
-			self.window.category(),
+			self.getCategoryID(),
 			self.window.price(),
 			self.window.stock(),
 		)
-		r = requests.post("http://localhost:8080/api/v1/products", data=data.toJson())
+		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+		r = requests.post("http://localhost:8080/api/v1/products", data=data.toJson(), headers=headers)
 		print(r.text)
 		print(r.status_code)
 		if r.status_code == 200:
@@ -75,21 +78,21 @@ class ProductsScreenController(object):
 	def deleteProduct(self, item):
 		data = self.view.listview.itemWidget(item).data
 		r = requests.delete("http://localhost:8080/api/v1/products/{}".format(data.id))
-		if r.status_code == 200:
+		if r.status_code == 204:
 			self.getProduct()
 
 	def putProduct(self, item):
 		data = Product(
 			self.view.listview.itemWidget(item).data.id,
 			self.window.name(),
-			self.window.category(),
+			self.getCategoryID(),
 			self.window.price(),
 			self.window.stock(),
 		)
-
-		r = requests.put("http://localhost:8080/api/v1/products/{}".format(data.id), data=data.toJson())
+		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+		r = requests.put("http://localhost:8080/api/v1/products", data=data.toJson(), headers=headers)
 		print(r.text)
-		if r.status_code == 200:
+		if r.status_code == 204:
 			self.getProduct()
 
 	def showAddItem(self):
@@ -102,6 +105,8 @@ class ProductsScreenController(object):
 	def showEditItem(self, item):
 		product = self.view.listview.itemWidget(item).data
 		self.window.clear()	
+		self.getCategory()
+		self.setCategoryID(product.categoryID)
 		self.window.setData(product)
 		self.window.setTitle("Editando um Produto")
 		self.window.onSuccess = self.onEditItem
@@ -124,6 +129,14 @@ class ProductsScreenController(object):
 			deleteThread = RestThread(self.view, item)
 			deleteThread.update.connect(self.deleteProduct)
 			deleteThread.start()
+
+	def getCategoryID(self):
+		return self.categories[self.window.inputCategory.currentIndex()].id
+
+	def setCategoryID(self, id):
+		for i in range(len(self.categories)):
+			if self.categories[i].id == id:
+				self.window.inputCategory.setCurrentIndex(i)
 
 	def createModelItem(self, id, name, category, price, stock):
 		return [
