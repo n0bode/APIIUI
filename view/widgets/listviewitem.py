@@ -42,17 +42,17 @@ class ListViewItem (QWidget):
 
 		if not self.isHeader:
 			if self.canEdit:
-				btnEdit = loader.buttonIcon("edit.png", 15, 15)
-				btnEdit.setFixedSize(20, 20)
-				btnEdit.setFlat(True)
-				btnEdit.clicked.connect(self._onEdit)
-				box.layout().addWidget(btnEdit)
+				self.btnEdit = loader.buttonIcon("edit.png", 15, 15)
+				self.btnEdit.setFixedSize(20, 20)
+				self.btnEdit.setFlat(True)
+				self.btnEdit.clicked.connect(self._onEdit)
+				box.layout().addWidget(self.btnEdit)
 			if self.canDelete:
-				btnDel = loader.buttonIcon("cancel.png", 15, 15)
-				btnDel.setFixedSize(20, 20)
-				btnDel.setFlat(True)
-				btnDel.clicked.connect(self._onDelete)
-				box.layout().addWidget(btnDel)
+				self.btnDel = loader.buttonIcon("cancel.png", 15, 15)
+				self.btnDel.setFixedSize(20, 20)
+				self.btnDel.setFlat(True)
+				self.btnDel.clicked.connect(self._onDelete)
+				box.layout().addWidget(self.btnDel)
 		layout.addWidget(box)
 		self.setLayout(layout)
 

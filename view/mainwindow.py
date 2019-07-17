@@ -17,7 +17,7 @@ class MainWindow(QWidget):
 		super(MainWindow, self).__init__(*args)
 		self.controller = controller
 		#Muda o Titulo da Janela
-		self.setWindowTitle("Mercadin")
+		self.setWindowTitle("Finanças")
 		#Criar um limitador de tamanho da tela
 		self.setMinimumSize(1000, 500)
 		#Seta o icon da janela
@@ -46,7 +46,7 @@ class MainWindow(QWidget):
 		navbar.setObjectName("navbar")
 		navbar.layout().setSpacing(0)
 
-		logo = self._createNavButton("Mercadin", "icon_app.png")
+		logo = self._createNavButton("Finanças", "icon_app.png")
 		logo.setObjectName("logo")
 		logo.setFixedHeight(50)
 		navbar.layout().addWidget(logo)

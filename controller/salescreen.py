@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QMessageBox
 from controller.salewindow import SaleWindowController
 from .restthread import RestThread
 import requests
+import loader
 
 class SaleScreenController(object):
 	def __init__(self):
@@ -26,7 +27,8 @@ class SaleScreenController(object):
 			self.getCustomerName(sale.customerId),
 			sale.grossAmount, 
 		)
-		self.view.listview.createItem(sale, model)
+		item = self.view.listview.createItem(sale, model)
+		self.view.listview.itemWidget(item).btnEdit.setIcon(loader.loadIcon("list"))
 
 	def createHeader(self):
 		header = self.createModelItem("ID", "Cliente", "Preço (R$)")
