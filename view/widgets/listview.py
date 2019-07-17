@@ -26,6 +26,16 @@ class ListView(QListWidget):
 		self.setItemWidget(item, widget)
 		return item
 
+	def addWidget(self, widget):
+		item = QListWidgetItem()
+		item.setSizeHint(QSize(0, 35))
+		widget.item = item
+		widget.canEdit = self.canEdit
+		widget.canDelete = self.canDelete
+		self.addItem(item)
+		self.setItemWidget(item, widget)
+		return item
+
 	def onPressEdit(self, item):
 		self.onEditItem.emit(item)
 

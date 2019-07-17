@@ -36,3 +36,6 @@ class SearchBar(QWidget):
 
 	def _onSubmit(self):
 		self.submitted.emit(self._input.text())
+
+	def clear(self):
+		self._input.clear()

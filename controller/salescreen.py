@@ -105,6 +105,7 @@ class SaleScreenController(object):
 		self.window = SaleWindowController(self)
 		self.window.view.onSuccess = self.onAddNewItem	
 		self.window.updateCustomer()
+		self.window.updateProduct()
 		self.window.view.setTitle("Adicionando um Venda")
 		self.window.view.show()
 
