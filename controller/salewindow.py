@@ -29,7 +29,7 @@ class SaleWindowController:
 		return data.name.lower().startswith(pattern.lower())
 
 	def getCart(self):
-		return list(map(lambda p: SaleItem(0, 0, p.id), self._cart))
+		return list(map(lambda p: SaleItem(0, 0, p.id, 1).__dict__, self._cart))
 
 	def getCustomer(self):
 		self.view.customers.setEnabled(False)
