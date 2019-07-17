@@ -50,8 +50,8 @@ class ProductWindow(Dialog):
 
 	def clear(self):
 		self._name.clear()
-		self._price.setValue(0)
-		self._stock.setValue(0)
+		self._price.setValue(1)
+		self._stock.setValue(1)
 		self.inputCategory.setCurrentIndex(0)
 		self._date.setDate(QDate.currentDate())
 		self._name.parent().setProperty("hint", False)
