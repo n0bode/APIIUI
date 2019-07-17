@@ -15,6 +15,10 @@ QLabel {
 	border: none;
 }
 
+#grossText{
+	font-size: 13pt;
+}
+
 QPushButton{
 	background-color: #FFF;
 	border: 1px solid #EEE;

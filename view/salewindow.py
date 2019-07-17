@@ -19,6 +19,7 @@ class SaleWindow(Dialog):
 		self.products.setFixedHeight(300)
 
 		self.grossText = QLabel("Valor total: 0 R$")
+		self.grossText.setObjectName("grossText")
 		self.buttonAddProduct = loader.buttonIcon("addcart", 20, 20)
 		self.buttonAddProduct.setText("Adicionar a Venda")
 		self.buttonAddProduct.setFixedHeight(40)
