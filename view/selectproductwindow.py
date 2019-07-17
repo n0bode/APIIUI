@@ -25,9 +25,11 @@ class SelectProductWindow(Dialog):
 		super(SelectProductWindow, self)._initUI()
 		
 	def getProduct(self):
-		item = self.products.item(self.products.currentRow())
-		widget = self.products.itemWidget(item)
-		return widget.data
+		if self.products.currentRow() > 0:
+			item = self.products.item(self.products.currentRow())
+			widget = self.products.itemWidget(item)
+			return widget.data
+		return None
 
 	def clear(self):
 		self.products.clear()
@@ -37,5 +39,8 @@ class SelectProductWindow(Dialog):
 		pass
 
 	def checkSuccess(self):
-		self.setCurrentItem(self.getProduct())
-		return True
+		product = self.getProduct()
+		if product is not None:
+			self.setCurrentItem(product)
+			return True
+		return False

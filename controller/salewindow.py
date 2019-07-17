@@ -29,7 +29,7 @@ class SaleWindowController:
 		return data.name.lower().startswith(pattern.lower())
 
 	def getCart(self):
-		return list(map(lambda p: SaleItem(0, 0, p.id, 1).__dict__, self._cart))
+		return list(map(lambda p: SaleItem(0, 0, p.id), self._cart))
 
 	def getCustomer(self):
 		self.view.customers.setEnabled(False)
@@ -90,14 +90,15 @@ class SaleWindowController:
 	def updateGross(self):
 		self.view.grossText.setText("Valor Total: {:.2f} R$".format(self.getGross()))
 
-	def addCart(self, product):
+	def addCart(self, product): 
+		self._cart.append(product)
 		model = self.createModelCart(product.id, product.name, product.price)
 		self.view.products.createItem(product, model)
-		self._cart.append(product)
 		self.updateGross()
 
 	def remCart(self, item):
 		product = self.view.products.itemWidget(item).data
+		self._cart.remove(product)
 		self.view.products.deleteItem(item)
 		self.updateGross()
 
