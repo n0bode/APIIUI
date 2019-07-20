@@ -13,9 +13,8 @@ import loader
 import translator
 
 class MainWindow(QWidget):
-	def __init__(self, controller, *args):
+	def __init__(self, *args):
 		super(MainWindow, self).__init__(*args)
-		self.controller = controller
 		#Muda o Titulo da Janela
 		self.setWindowTitle("Finanças")
 		#Criar um limitador de tamanho da tela
@@ -52,37 +51,33 @@ class MainWindow(QWidget):
 		navbar.layout().addWidget(logo)
 
 		#Criando os Botoes da navbar
-		#Botao Producto
-		productBtn = self._createNavButton("Produtos", "products.png")
-		productBtn.clicked.connect(lambda: self.controller.switchScreen(0))
-		productBtn.setChecked(True)
-
 		#Botao Vendas
-		sellsBtn = self._createNavButton("Vendas", "sales.png")
-		sellsBtn.clicked.connect(lambda: self.controller.switchScreen(1))
+		self.sellsBtn = self._createNavButton("Vendas", "sales.png")
+		self.sellsBtn.setChecked(True)
 
+		#Botao Produto
+		self.productBtn = self._createNavButton("Produtos", "products.png")
+		
 		#Botao Clients
-		clientBtn = self._createNavButton("Clientes", "clientes.png")
-		clientBtn.clicked.connect(lambda: self.controller.switchScreen(2))
+		self.clientBtn = self._createNavButton("Clientes", "clientes.png")
 
 		#Botao Categoria
-		tagBtn = self._createNavButton("Categorias", "category.png")
-		tagBtn.clicked.connect(lambda: self.controller.switchScreen(3))
+		self.tagBtn = self._createNavButton("Categorias", "category.png")
 
 		#GroupButton para criar uma exclusão entre os botoes
 		#Para que não fique selecionado dois de uma vez
 		group = QButtonGroup(self)
 		group.setExclusive(True)
-		group.addButton(productBtn)
-		group.addButton(sellsBtn)
-		group.addButton(clientBtn)
-		group.addButton(tagBtn)
+		group.addButton(self.sellsBtn)
+		group.addButton(self.productBtn)
+		group.addButton(self.clientBtn)
+		group.addButton(self.tagBtn)
 
 		#Adicionando os botoes à Layout da NavBar
-		navbar.layout().addWidget(productBtn)
-		navbar.layout().addWidget(sellsBtn)
-		navbar.layout().addWidget(clientBtn)
-		navbar.layout().addWidget(tagBtn)
+		navbar.layout().addWidget(self.sellsBtn)
+		navbar.layout().addWidget(self.productBtn)
+		navbar.layout().addWidget(self.clientBtn)
+		navbar.layout().addWidget(self.tagBtn)
 		return navbar
 
 	#Funcao pra criar os botoes da NavBar

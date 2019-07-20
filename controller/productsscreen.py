@@ -39,9 +39,16 @@ class ProductsScreenController(object):
 	def filterItems(self, data, pattern):
 		return data.name.lower().startswith(pattern.lower())
 
-	def getProduct(self):
-		self.getCategory()
+	def updateProduct(self):
+		updateThread = RestThread(self.view)
+		updateThread.update.connect(self._threadUpdate)
+		updateThread.start()
 
+	def _threadUpdate(self):
+		self.getCategory()
+		self.getProduct()
+
+	def getProduct(self):
 		self.view.listview.setEnabled(False)
 		self.view.listview.clear()
 
@@ -73,13 +80,13 @@ class ProductsScreenController(object):
 		print(r.text)
 		print(r.status_code)
 		if r.status_code == 200:
-			self.getProduct()
+			self.updateProduct()
 
 	def deleteProduct(self, item):
 		data = self.view.listview.itemWidget(item).data
 		r = requests.delete("http://localhost:8080/api/v1/products/{}".format(data.id))
 		if r.status_code == 204:
-			self.getProduct()
+			self.updateProduct()
 
 	def putProduct(self, item):
 		data = Product(
@@ -93,7 +100,7 @@ class ProductsScreenController(object):
 		r = requests.put("http://localhost:8080/api/v1/products", data=data.toJson(), headers=headers)
 		print(r.text)
 		if r.status_code == 204:
-			self.getProduct()
+			self.updateProduct()
 
 	def showAddItem(self):
 		self.window.onSuccess = self.onAddNewItem

@@ -52,6 +52,7 @@ QComboBox:hover, QSpinBox:hover{
 QLineEdit:focus, QDoubleSpinBox:focus, 
 QComboBox:focus, QSpinBox:focus{
 	border-bottom: 2px solid #2dd1ac;
+	color:black;
 }
 
 QComboBox::drop-down{

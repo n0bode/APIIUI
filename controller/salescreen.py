@@ -18,13 +18,13 @@ class SaleScreenController(object):
 		self.view.listview.onEditItem.connect(self.showEditItem)
 		self.view.listview.onFilter = self.filterItems
 		self.view.buttonAdd.clicked.connect(self.showAddItem)
-		
+		self._customers = {}
 		self.createHeader()
 
 	def addSale(self, sale):
 		model = self.createModelItem(
 			sale.id, 
-			self.getCustomerName(sale.customerId),
+			self._customers[sale.customerId],
 			sale.grossAmount, 
 		)
 		item = self.view.listview.createItem(sale, model)
@@ -37,12 +37,16 @@ class SaleScreenController(object):
 	def filterItems(self, data, pattern):
 		return data.name.lower().startswith(pattern.lower())
 
-	def getCustomerName(self, id):
-		c = requests.get("http://localhost:8080/api/v1/customers/{}".format(id))
+		
+	def getCustomer(self):
+		c = requests.get("http://localhost:8080/api/v1/customers".format(id))
 		if c.status_code == 200:
-			return c.json()["name"]
+			for customer in c.json():
+				self._customers.update({customer["id"]:customer["name"]})
 
 	def getSale(self):
+		self.getCustomer()
+
 		self.view.listview.setEnabled(False)
 		self.view.listview.clear()
 		try:

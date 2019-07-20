@@ -45,20 +45,22 @@ class SaleWindowController:
 				self._customers = [Customer(**data) for data in r.json()]
 				self.view.customers.addItems([customer.name for customer in self._customers])
 		except Exception as e:
-			print(e)
+			print("Error to get customers in Sale Window", e)
 		self.view.customers.setEnabled(True)
 
 	def getProduct(self):
 		self.window.products.setEnabled(False)
 		self.window.products.clear()
-		r = requests.get("http://localhost:8080/api/v1/products/inStock")
-		if r.status_code == 200:
-			for data in r.json():
-				product = Product(**data)
-				print(product)
-				self.addProduct(product)
-				self._products.append(product)
-		self.window.products.setEnabled(True)
+		try:
+			r = requests.get("http://localhost:8080/api/v1/products/inStock")
+			if r.status_code == 200:
+				for data in r.json():
+					product = Product(**data)
+					self.addProduct(product)
+					self._products.append(product)
+			self.window.products.setEnabled(True)
+		except Exception as e:
+			print("Error to get products in Sale Window", e)
 
 	def getProductById(self, id):
 		for product in self._products:
@@ -102,7 +104,7 @@ class SaleWindowController:
 
 	def addCart(self, product, quantity, canEdit=True, canDelete=True): 
 		model = self.createModelCart(product.id, product.name, product.price, "")
-		widget = SaleItemWidget(self.view.products, None, SaleItem(0, 0, product.id, 1), model, canEdit=canEdit, canDelete=canDelete)
+		widget = SaleItemWidget(self.view.products, None, SaleItem(0, 0, product.id, quantity), model, canEdit=canEdit, canDelete=canDelete)
 		widget.inputQtds.setValue(quantity)
 		widget.valueChanged.connect(self.onValueChangedItemCart)
 		
@@ -117,7 +119,6 @@ class SaleWindowController:
 
 	def onValueChangedItemCart(self, item, value):
 		widget = self.view.products.itemWidget(item)
-		print(type(widget))
 		saleItem = widget.data
 		product = self.getProductById(saleItem.productId)
 		if product.stock < value:
@@ -181,7 +182,7 @@ class SaleWindowController:
 		self.view.grossText.setText("Valor Total: {:.2f} R$".format(self.getGross()))
 
 	def addSale(self, widget):
-		print(widget)
+		pass
 	
 	def getGross(self):
 		gross = 0
